@@ -49,7 +49,7 @@ Uruchom wybrany test:
 ```bash
 npx playwright test tests/m_judycka_booking_test.spec.ts
 npx playwright test tests/m_judycka_language_test.spec.ts
-npx playwright test tests/m_judycka_specialists_translation_test.spec.ts
+npx playwright test tests/m_judycka_fail_test.spec.ts
 ```
 
 Wyświetl raport HTML:
@@ -58,7 +58,7 @@ Wyświetl raport HTML:
 npx playwright show-report
 ```
 
-Przeglądarka domyślnie uruchamia się w trybie widocznym (`headless: false`).
+Tryb przeglądarki ustawia stała `HEADLESS` na początku pliku `playwright.config.ts`. Domyślnie jest to `true` (headless, bez okna); zmień na `false`, aby zobaczyć okno przeglądarki. Testy działają w obu trybach.
 
 ## Tworzenie testów – Codegen
 

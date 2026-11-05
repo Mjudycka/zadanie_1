@@ -57,26 +57,28 @@ test.describe('Weryfikacja tłumaczenia nazw specjalistów', () => {
     }).click();
 
     // KROK 10: Wybór specjalizacji
-    const specialistSelect = page.locator('#react-select-2-input');
+    const specialistSelect = page.getByRole('combobox');
 
     await expect(specialistSelect).toBeVisible();
     await specialistSelect.click();
 
-    await page.locator('#react-select-2-option-0')
-      .getByText('Automatisierte Tests -')
+    await page
+      .getByRole('option', { name: /Automatisierte Tests - Internisten/ })
       .click();
 
     // KROK 11: Otwarcie listy specjalistów
     await specialistSelect.click();
 
+    // Granice słów (\b) – żeby niemieckie "Internisten" nie zaliczało się jako "Internist".
+
     // KROK 12: Weryfikacja angielskiej nazwy Dermatologist
     await expect.soft(
-        page.getByText('Dermatologist', { exact: false })
+      page.getByRole('option', { name: /\bDermatologist\b/ })
     ).toBeVisible();
 
     // KROK 13: Weryfikacja angielskiej nazwy Internist
     await expect.soft(
-        page.getByText('Internist', { exact: false })
+      page.getByRole('option', { name: /\bInternist\b/ })
     ).toBeVisible();
   });
 });

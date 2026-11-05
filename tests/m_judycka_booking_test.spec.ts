@@ -181,9 +181,7 @@ test('Rezerwacja konsultacji receptowej', async ({ page }) => {
     }).click();
 
     // KROK 9: Znalezienie pola wyboru wskazania
-    const indicationInput = page.locator(
-      'input[id^="react-select-"][id$="-input"]'
-    );
+    const indicationInput = page.getByRole('combobox');
 
     await expect(indicationInput).toBeVisible({
       timeout: 10000,

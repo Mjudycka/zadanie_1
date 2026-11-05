@@ -1,5 +1,4 @@
-
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class LanguagePage {
   readonly page: Page;
@@ -29,41 +28,39 @@ export class LanguagePage {
     });
   }
 
-  async switchToPolish() {
+  // Otwiera menu profilu i czeka, aż pojawi się przynajmniej jedna opcja językowa.
+  // isVisible() nie czeka, więc bez tego test zależy od tempa renderowania.
+  private async openLanguageMenu() {
     await this.profileButton.click();
+
+    await expect(
+      this.polishOption.or(this.englishOption).first()
+    ).toBeVisible();
+  }
+
+  async switchToPolish() {
+    await this.openLanguageMenu();
 
     if (await this.polishOption.isVisible()) {
       await this.polishOption.click();
       return;
     }
 
-    if (await this.englishOption.isVisible()) {
-      // Język polski jest już ustawiony.
-      await this.profileButton.click();
-      return;
-    }
-
-    throw new Error(
-      'Nie znaleziono opcji zmiany języka PL ani EN.'
-    );
+    // Menu jest otwarte, a opcji PL brak – język polski jest już ustawiony.
+    await expect(this.englishOption).toBeVisible();
+    await this.profileButton.click();
   }
 
   async switchToEnglish() {
-    await this.profileButton.click();
+    await this.openLanguageMenu();
 
     if (await this.englishOption.isVisible()) {
       await this.englishOption.click();
       return;
     }
 
-    if (await this.polishOption.isVisible()) {
-      // Język angielski jest już ustawiony.
-      await this.profileButton.click();
-      return;
-    }
-
-    throw new Error(
-      'Nie znaleziono opcji zmiany języka EN ani PL.'
-    );
+    // Menu jest otwarte, a opcji EN brak – język angielski jest już ustawiony.
+    await expect(this.polishOption).toBeVisible();
+    await this.profileButton.click();
   }
 }

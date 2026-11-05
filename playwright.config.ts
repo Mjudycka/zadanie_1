@@ -1,6 +1,10 @@
-
 import 'dotenv/config';
 import { defineConfig, devices } from '@playwright/test';
+
+// Tryb przeglądarki – zmień ręcznie w kodzie:
+//   true  = headless (bez okna, np. CI),
+//   false = widoczne okno przeglądarki (np. podgląd lokalny).
+const HEADLESS = true;
 
 export default defineConfig({
   testDir: './tests',
@@ -13,8 +17,7 @@ export default defineConfig({
 
   use: {
     baseURL: process.env.BASE_URL,
-    headless: false,
-    viewport: { width: 1920, height: 1080 },
+    headless: HEADLESS,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
     actionTimeout: 10_000,
@@ -23,7 +26,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      //use: { ...devices['Desktop Chrome'] },
+      use: {
+        // Zwykły user-agent Chrome (bez "HeadlessChrome") – tak samo w headless i headed.
+        ...devices['Desktop Chrome'],
+        // Nadpisuje domyślny viewport z urządzenia (1280x720).
+        viewport: { width: 1920, height: 1080 },
+      },
     },
   ],
 });
