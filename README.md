@@ -6,7 +6,7 @@ Projekt zawiera trzy testy automatyczne aplikacji Telemedi, napisane w **Playwri
 
 - Test rezerwacji wizyty z receptą – od logowania do przekierowania do operatora płatności.
 - Test zmiany języka interfejsu na angielski.
-- Test poprawności tłumaczenia nazw specjalistów na język angielski.
+- Test poprawności tłumaczenia nazw specjalistów na język angielski - Umawianie wizyty online. Ten test MA PRAWO FAILOWAĆ. 
 
 **Uwaga:** Test rezerwacji sprawdza przekierowanie do operatora płatności Tpay, ale nie wykonuje płatności. Może utworzyć nieopłaconą rezerwację. Pod koniec testu wykonywana jest próba anulowania wizyt, które aplikacja pozwala anulować.
 
