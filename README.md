@@ -45,7 +45,7 @@ Wyświetl raport HTML:
 npx playwright show-report
 ```
 
-Przeglądarka domyślnie uruchamia się w trybie widocznym. Tryb można zmienić w pliku `playwright.config.ts`, w opcji `use.headless` (`false` – widoczna, `true` – działa w tle).
+Przeglądarka domyślnie uruchamia się w trybie widocznym. (headless=false)
 
 ## Tworzenie testów – Codegen
 

@@ -49,7 +49,6 @@ async function cleanupVisits(page: Page) {
     });
 
     const count = await cancelButtons.count();
-
     let foundVisibleButton = false;
 
     // Szukanie dostępnego przycisku Anuluj
@@ -139,6 +138,8 @@ async function cleanupVisits(page: Page) {
 
 // GŁÓWNY TEST
 test('Rezerwacja konsultacji receptowej', async ({ page }) => {
+  let loginCompleted = false;
+
   try {
     // KROK 1: Otwarcie strony
     await page.goto('/');
@@ -167,6 +168,7 @@ test('Rezerwacja konsultacji receptowej', async ({ page }) => {
 
     // KROK 6: Potwierdzenie poprawnego logowania
     await loginPage.expectLoggedIn();
+    loginCompleted = true;
 
     // KROK 7: Rozpoczęcie umawiania konsultacji
     await page.getByRole('button', {
@@ -178,17 +180,19 @@ test('Rezerwacja konsultacji receptowej', async ({ page }) => {
       name: 'Recepta Konsultacja z',
     }).click();
 
-    // KROK 9: Sprawdzenie, czy formularz wyboru wskazania jest widoczny
-    await expect(
-      page.locator('#react-select-2-input')
-    ).toBeVisible();
+    // KROK 9: Znalezienie pola wyboru wskazania
+    const indicationInput = page.locator(
+      'input[id^="react-select-"][id$="-input"]'
+    );
+
+    await expect(indicationInput).toBeVisible({
+      timeout: 10000,
+    });
 
     // KROK 10: Otwarcie pola wyboru wskazania
-    await page.locator('#react-select-2-input').click();
+    await indicationInput.click();
 
     // KROK 11: Wybór kategorii alergia
-    await page.getByText('AlergiaAntykoncepcja awaryjna').click();
-    await page.getByText('AlergiaAntykoncepcja awaryjna').click();
     await page.getByText('Alergia', {
       exact: true,
     }).click();
@@ -225,8 +229,10 @@ test('Rezerwacja konsultacji receptowej', async ({ page }) => {
 
   } finally {
     // KROK 17: Sprzątanie po teście
-    await cleanupVisits(page).catch(error => {
-      console.error('Błąd podczas sprzątania wizyt:', error);
-    });
+    if (loginCompleted) {
+      await cleanupVisits(page).catch(error => {
+        console.error('Błąd podczas sprzątania wizyt:', error);
+      });
+    }
   }
 });
