@@ -78,7 +78,3 @@ Wygenerowany kod można wykorzystać w plikach `.spec.ts` w folderze `tests/`. P
 - `pages/` – klasy Page Object i współdzielone czynności
 - `playwright.config.ts` – konfiguracja testów
 - `.env.example` – wzór konfiguracji środowiska
-
-**Uwaga:** Test rezerwacji sprawdza przekierowanie do operatora płatności Tpay, ale nie wykonuje płatności. Może utworzyć nieopłaconą rezerwację. Pod koniec testu wykonywana jest próba anulowania wizyt, które aplikacja pozwala anulować.
-
-**Uwaga dotycząca testu tłumaczenia specjalistów:** Test sprawdza obecność angielskich nazw specjalistów, m.in. „Dermatologist” i „Internist”. Może zakończyć się niepowodzeniem, jeśli aplikacja nie wyświetla oczekiwanych tłumaczeń. Jest to zamierzone — test ma wykrywać błędy tłumaczenia, a nie pomijać je.
